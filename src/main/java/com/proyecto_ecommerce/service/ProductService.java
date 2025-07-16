@@ -2,6 +2,7 @@ package com.proyecto_ecommerce.service;
 
 import com.proyecto_ecommerce.dto.request.ProductRequestDTO;
 import com.proyecto_ecommerce.dto.response.ProductResponseDTO;
+import com.proyecto_ecommerce.exception.ProductNotFoundException;
 import com.proyecto_ecommerce.model.Product;
 import com.proyecto_ecommerce.repository.IProductRepository;
 import org.springframework.beans.BeanUtils;
@@ -35,26 +36,53 @@ public class ProductService implements IProductService{
 
     @Override
     public List<ProductResponseDTO> getProducts() {
-        return null;
+        return this.repository.findAll()
+                .stream()
+                .map(this::mapperToDTO)
+                .toList();
     }
 
     @Override
     public List<ProductResponseDTO> searchProductByName(String queryName) {
-        return null;
+        List<Product> foundProducts = this.repository.findByNameContainingIgnoreCase(queryName);
+
+        if (foundProducts.isEmpty()) {
+            throw new ProductNotFoundException(queryName);
+        }
+
+        return foundProducts
+                .stream()
+                .map(this::mapperToDTO)
+                .toList();
     }
 
     @Override
     public ProductResponseDTO searchProductById(Long id) {
-        return null;
+        Product product = this.repository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id.toString()));
+
+        return this.mapperToDTO(product);
     }
 
     @Override
     public ProductResponseDTO updateProduct(Long id, ProductRequestDTO productDTO) {
-        return null;
+        Product product = this.repository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id.toString()));
+
+        BeanUtils.copyProperties(productDTO, product);
+
+        this.repository.save(product);
+
+        return this.mapperToDTO(product);
     }
 
     @Override
     public ProductResponseDTO deleteProduct(Long id) {
-        return null;
+        Product product = this.repository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id.toString()));
+
+        this.repository.delete(product);
+
+        return this.mapperToDTO(product);
     }
 }
