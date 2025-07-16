@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 
 @Entity
 @Getter
@@ -19,14 +18,12 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPro;
+    private Long id;
     private String name;
     private String description;
-    private int stock;
-    private Double cost;
-    private List<String> image;
-
-
-
+    private Integer stock;
+    private Double price;
+    private String category;
+    private String image;
 
 }
