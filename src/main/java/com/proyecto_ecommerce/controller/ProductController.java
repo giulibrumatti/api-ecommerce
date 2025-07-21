@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
-@CrossOrigin(origins = "${FRONT_END_URL")
+@CrossOrigin(origins = "${frontend.url}")
 public class ProductController {
 
     @Autowired
@@ -27,10 +27,11 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.service.createProduct(pRequestDto));
     }
     @Operation(summary = "Listar Productos", description = "Obtiene un listado de todos los productos del sistema")
-    @GetMapping
+    @GetMapping("")
     public List<ProductResponseDTO> getProducts(){
         return this.service.getProducts();
     }
+
     @Operation(summary = "Buscar por nombre", description = "Obtiene un listado de todos los productos que contenga el termino buscado en su nombre")
     @GetMapping("/search")
     public List<ProductResponseDTO> searchProductByName(@RequestParam String queryName){
