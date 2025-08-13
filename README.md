@@ -26,7 +26,7 @@ API REST para gestionar productos
 - REST API
 - DTO pattern
 - CORS
-- Tailwind CSS (en el frontend)
+- Tailwind CSS (en el frontend) (https://github.com/giulibrumatti/ecommerce-ft.git)
 
 ---
 
